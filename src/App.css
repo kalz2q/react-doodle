@@ -9,8 +9,3 @@
   font-size: calc(10px + 2vmin);
   /* color: white; */
 }
-
-#mycanvas {
-  border: 10px solid pink;
-  background-color: blue;
-}

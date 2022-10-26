@@ -20,6 +20,18 @@ function App() {
       context.fillStyle = "yellow";
       context.fillRect(50, 50, 50, 50);
       context.fillRect(canvasElem.width - 100, 50, 50, 50);
+      context.lineWidth = 1;
+      for (let i = 0; i < 6; i++) {
+        for (let j = 0; j < 6; j++) {
+          context.strokeStyle = `rgb(
+            0,
+            ${Math.floor(255 - 42.5 * i)},
+            ${Math.floor(255 - 42.5 * j)})`;
+          context.beginPath();
+          context.arc(12.5 + j * 25, 12.5 + i * 25, 10, 0, Math.PI * 2, true);
+          context.stroke();
+        }
+      }
     }
 
     setPng(canvasElem.toDataURL());
