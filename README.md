@@ -7,3 +7,10 @@ react addEventListner canvas
 を学ぶ必要がありそう。なので検索
 React/Canvas に絵を書くコンポーネントを作成
 https://px-wing.hatenablog.com/entry/2020/08/15/055738
+
+React で Canvas を使ってお絵描きツールを作る
+https://qiita.com/amabie-mamoru/items/af1f7c7d0877022dbe89
+
+うまく行かないので codepen にあるやつを翻訳してみよう
+https://codepen.io/jmaurad/pen/QzVeRz
+Drawing React Component
