@@ -5,23 +5,30 @@ const { useEffect, useState } = React;
 function App() {
   const [png, setPng] = useState<string | null>(null);
 
+
   useEffect(() => {
     const canvasElem = document.createElement("canvas");
     const context = canvasElem.getContext("2d");
     canvasElem.width = 400;
     canvasElem.height = 200;
 
+    let startX, startY, x, y;
+
+    function mouseDown() {
+      draw();
+    }
+    function mouseMove() {
+
+    }
+
+    canvasElem.addEventListener('event', mouseDown, false);
+
     // draw
     if (context !== null) {
       context.lineWidth = 10;
       context.strokeStyle = "blue"
       context.strokeRect(0, 0, canvasElem.width, canvasElem.height);
-      // context.fillRect(0, 0, canvasElem.width, canvasElem.height);
-      context.fillStyle = "yellow";
-      context.fillRect(50, 50, 50, 50);
-      context.fillRect(canvasElem.width - 100, 50, 50, 50);
     }
-
     setPng(canvasElem.toDataURL());
   }, [png]);
 
