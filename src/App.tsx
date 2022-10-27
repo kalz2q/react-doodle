@@ -4,38 +4,51 @@ const { useEffect, useState, useCallback } = React;
 
 function App() {
   const [png, setPng] = useState<string | null>(null);
+  const [isPainting, setIsPainting] = useState(false);
+  const [mousePosition, setMousePosition] = useState<Coordinate | undefined>(undefined);
 
   type Coordinate = {
     x: number;
     y: number;
   };
 
-  const [isPainting, setIsPainting] =  useState(false);
-  const [mousePosition, setMousePosition] = useState<Coordinate | undefined>(undefined);
-
-
   const startPaint = useCallback((event: MouseEvent) => {
     const coordinates = getCoordinates(event);
     if (coordinates) {
-        setMousePosition(coordinates);
-        setIsPainting(true);
+      setMousePosition(coordinates);
+      setIsPainting(true);
     }
-}, []);
+  }, []);
 
-
-const paint = useCallback(
-  (event: MouseEvent) => {
+  const paint = useCallback(
+    (event: MouseEvent) => {
       if (isPainting) {
-          const newMousePosition = getCoordinates(event);
-          if (mousePosition && newMousePosition) {
-              drawLine(mousePosition, newMousePosition);
-              setMousePosition(newMousePosition);
-          }
+        const newMousePosition = getCoordinates(event);
+        if (mousePosition && newMousePosition) {
+          drawLine(mousePosition, newMousePosition);
+          setMousePosition(newMousePosition);
+        }
       }
-  },
-  [isPainting, mousePosition]
-);
+    },
+    [isPainting, mousePosition]
+  );
 
+
+  const getCoordinates = (event: MouseEvent) => {
+    if (event.type === 'mousedown') {
+      startX = event.pageX - canvasElem.offsetLeft - borderWidth;
+      startY = event.pageY - canvasElem.offsetTop - borderWidth;
+    } else if (event.type === 'mousemove') {
+      x = event.pageX - canvasElem.offsetLeft - borderWidth;
+      y = event.pageY - canvasElem.offsetTop - borderWidth;
+      context.beginPath();
+      context.moveTo(startX, startY);
+      context.lineTo(x, y);
+      context.stroke();
+      startX = x;
+      startY = y;
+    }
+  }
 
   useEffect(() => {
     const canvasElem = document.createElement("canvas");
@@ -43,7 +56,7 @@ const paint = useCallback(
 
     canvasElem.width = 400;
     canvasElem.height = 200;
-    
+
     if (context !== null) {
       context.lineWidth = 10;
       context.strokeStyle = "blue"
@@ -53,21 +66,6 @@ const paint = useCallback(
 
       canvasElem.addEventListener("mousemove", event => getCoordinate(event));
 
-      const getCoordinate = (event: MouseEvent) => {
-        if (event.type === 'mousedown') {
-          startX = event.pageX - canvasElem.offsetLeft - borderWidth;
-          startY = event.pageY - canvasElem.offsetTop - borderWidth;
-        } else if (event.type === 'mousemove') {
-          x = event.pageX - canvasElem.offsetLeft - borderWidth;
-          y = event.pageY - canvasElem.offsetTop - borderWidth;
-          context.beginPath();
-          context.moveTo(startX, startY);
-          context.lineTo(x, y);
-          context.stroke();
-          startX = x;
-          startY = y;
-        }
-      }
     }
     setPng(canvasElem.toDataURL());
   }, [png]);

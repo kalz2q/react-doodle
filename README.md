@@ -14,3 +14,6 @@ https://qiita.com/amabie-mamoru/items/af1f7c7d0877022dbe89
 うまく行かないので codepen にあるやつを翻訳してみよう
 https://codepen.io/jmaurad/pen/QzVeRz
 Drawing React Component
+
+How to draw on a page using react hooks and typescript
+https://www.ankursheel.com/blog/react-component-draw-page-hooks-typescript
