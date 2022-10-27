@@ -10,13 +10,13 @@ function App() {
   useEffect(() => {
     const canvasElem = document.createElement("canvas");
     const context = canvasElem.getContext("2d");
+    canvasElem.width = 400;
+    canvasElem.height = 200;
     let startX: number, startY: number, x: number, y: number,
       borderWidth = 10;
 
 
 
-    canvasElem.width = 400;
-    canvasElem.height = 200;
 
     // draw
     if (context !== null) {
