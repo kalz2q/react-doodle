@@ -12,36 +12,39 @@ function App() {
     y: number;
   };
 
+
+
+
   useEffect(() => {
     const canvasElem = document.createElement("canvas");
     const context = canvasElem.getContext("2d");
-    
+    canvasElem.addEventListener("mousedown", event => startPaint(event));
+
     canvasElem.width = 400;
     canvasElem.height = 200;
-    
-    
+
+
+
     // ---
     if (context !== null) {
       context.lineWidth = 10;
       context.strokeStyle = "blue"
       context.strokeRect(0, 0, canvasElem.width, canvasElem.height);
-      
 
-      canvasElem.addEventListener("mousedown", event => startPaint(event));
-      canvasElem.addEventListener("mousemove", event => getCoordinates(event));
-      canvasElem.addEventListener('mousemove', event => paint(event));
-      canvasElem.addEventListener('mouseup', () => exitPaint());
-      canvasElem.addEventListener('mouseleave', () => exitPaint());
 
-      const startPaint = (event: MouseEvent) =>   {
+      canvasElem.addEventListener("mousemove", event => getCoordinate(event));
+
+
+      const startPaint = useCallback((event: MouseEvent) => {
         const coordinates = getCoordinates(event);
         if (coordinates) {
           setMousePosition(coordinates);
           setIsPainting(true);
         }
-      }
+      }, []);
 
-      const paint = (event: MouseEvent) => {
+      const paint = useCallback(
+        (event: MouseEvent) => {
           if (isPainting) {
             const newMousePosition = getCoordinates(event);
             if (mousePosition && newMousePosition) {
@@ -49,31 +52,28 @@ function App() {
               setMousePosition(newMousePosition);
             }
           }
-        }
+        },
+        [getCoordinates]
+      );
 
-        const exitPaint = () =>  {
-          setIsPainting(false);
-          setMousePosition(undefined);
+
+      const getCoordinates = (event: MouseEvent) => {
+        if (event.type === 'mousedown') {
+          startX = event.pageX - canvasElem.offsetLeft - borderWidth;
+          startY = event.pageY - canvasElem.offsetTop - borderWidth;
+        } else if (event.type === 'mousemove') {
+          x = event.pageX - canvasElem.offsetLeft - borderWidth;
+          y = event.pageY - canvasElem.offsetTop - borderWidth;
+          context.beginPath();
+          context.moveTo(startX, startY);
+          context.lineTo(x, y);
+          context.stroke();
+          startX = x;
+          startY = y;
+        }
       }
 
 
-
-      const getCoordinates = (event: MouseEvent): Coordinate | undefined => {
-        return { x: event.pageX - canvasElem.offsetLeft, y: event.pageY - canvasElem.offsetTop };
-    };
-
-    const drawLine = (originalMousePosition: Coordinate, newMousePosition: Coordinate) => {
-          context.strokeStyle = 'red';
-          context.lineJoin = 'round';
-          context.lineWidth = 5;
-
-          context.beginPath();
-          context.moveTo(originalMousePosition.x, originalMousePosition.y);
-          context.lineTo(newMousePosition.x, newMousePosition.y);
-          context.closePath();
-
-          context.stroke();
-  };
 
 
     }
