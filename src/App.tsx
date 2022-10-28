@@ -2,12 +2,8 @@ import React from 'react';
 import './App.css';
 const { useRef } = React;
 
-interface IProps {
-  width: number;
-  height: number;
-}
 
-interface IRect {
+type IRect = {
   width: number;
   height: number;
   left: number;
@@ -69,14 +65,14 @@ function App() {
     mouseY = y;
   }
 
-  const Reset = () => {
+  const reset = () => {
     const ctx = getContext();
     ctx.clearRect(0, 0, width, height);
   }
 
   return (
     <div className="App">
-      <h1>お絵かきアプリ</h1>
+      <h3>お絵かきアプリ</h3>
       <div>
         <canvas onMouseDown={OnClick}
           onMouseMove={OnMove}
@@ -88,7 +84,7 @@ function App() {
         />
       </div>
       <div>
-        <button onClick={Reset}>リセット</button>
+        <button onClick={reset}>リセット</button>
       </div>
 
     </div>
