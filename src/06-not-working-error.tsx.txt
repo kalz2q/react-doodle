@@ -1,0 +1,97 @@
+import React from 'react';
+import './App.css';
+const { useEffect } = React;
+
+function App() {
+  let canvas,
+    ctx,
+    drawFlag = false,
+    prevX = 0,
+    currX = 0,
+    prevY = 0,
+    currY = 0,
+    dotFlag = false;
+
+  // 線のスタイルを指定    
+  let x = "red", y = 2;
+
+  // 線の描画イベント
+  const draw = () => {
+    if (dotFlag) {
+      ctx.beginPath();
+      ctx.fillStyle = x;
+      ctx.fillRect(currX, currY, 2, 2);
+      ctx.closePath();
+      dotFlag = false;
+    } else {
+      ctx.beginPath();
+      ctx.moveTo(prevX, prevY);
+      ctx.lineTo(currX, currY);
+      ctx.strokeStyle = x;
+      ctx.lineWidth = y;
+      ctx.stroke();
+      ctx.closePath();
+    }
+  }
+
+  // マウスイベントの座標を取得及びイベント毎による処理を振り分ける
+  const getCoordinate = (event) => {
+    if ((event.type == 'mousedown') || (event.type == 'mousemove')) {
+      prevX = currX;
+      prevY = currY;
+      currX = event.clientX - canvas.offsetLeft;
+      currY = event.clientY - canvas.offsetTop;
+    }
+
+    if (event.type == 'mousedown') {
+      drawFlag = true;
+      dotFlag = true;
+      if (dotFlag) {
+        draw();
+      }
+    }
+
+    if (event.type == 'mouseup' || event.type == "mouseout") {
+      drawFlag = false;
+    }
+
+    if ((event.type == 'mousemove') && (drawFlag)) {
+      draw();
+    }
+  }
+
+  useEffect(() => {
+    canvas = document.getElementById('canvas');
+    ctx = canvas.getContext("2d");
+    // 線を引くイベント（mouse move）
+    canvas.addEventListener("mousemove", event => getCoordinate(event));
+    // 線を引くイベント（mouse down）
+    canvas.addEventListener("mousedown", event => getCoordinate(event));
+    // 線を引かないイベント（mouse up）
+    canvas.addEventListener("mouseup", event => getCoordinate(event));
+    // 線を引かないイベント（mouse out）
+    canvas.addEventListener("mouseout", event => getCoordinate(event));
+  })
+
+  const style = {
+    minWidth: 64,
+    lineHeight: "32px",
+    borderRadius: 4,
+    border: "none",
+    padding: "0 16px",
+    color: "#fff",
+    background: "#639"
+  };
+
+
+
+  return (
+    <div className="App">
+      <h1>お絵かきアプリ</h1>
+      <canvas id="canvas" width="400" height="400" style={style}></canvas>
+    </div>
+  );
+}
+
+
+export default App;
