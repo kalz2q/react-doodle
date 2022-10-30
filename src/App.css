@@ -1,15 +1,21 @@
 .App {
   text-align: center;
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
+  background-color: grey;
+  /* min-height: 100vh; */
+  /* display: flex; */
   flex-direction: column;
   align-items: center;
   /* justify-content: center; */
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: red;
 }
 
 canvas {
   background-color: white;
+}
+
+.reset {
+  font-size: calc(10px + 1vmin);
+  border-radius: 10px;
+  background-color: yellow;
 }
